@@ -1,3 +1,5 @@
+'use strict';
+
 function getLineLength(node) {
     let lineLength = '@'.length +
         node.name.length +

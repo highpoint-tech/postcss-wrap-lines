@@ -1,3 +1,5 @@
+'use strict';
+
 const lastLineLength = require('./lastLineLength');
 const wrapLine = require('./wrapLine');
 

@@ -1,3 +1,5 @@
+'use strict';
+
 function testCharacter(char, delimiters) {
     const white = new RegExp(/^\s$/);
 

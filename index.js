@@ -1,3 +1,5 @@
+'use strict';
+
 const lastLineLength = require('./libs/lastLineLength');
 const postcss = require('postcss');
 const processAtRule = require('./libs/processAtRule');
