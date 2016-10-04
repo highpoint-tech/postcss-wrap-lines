@@ -2,9 +2,7 @@
 
 [PostCSS] plugin to wrap lines after a specified number of characters.
 
-[PostCSS]: https://github.com/postcss/postcss
-[ci-img]:  https://travis-ci.org/hp-mobile/postcss-wrap-lines.svg
-[ci]:      https://travis-ci.org/hp-mobile/postcss-wrap-lines
+This functionality is useful if a tool in your chain has a limit on characters-per-line.
 
 ```css
 .foo {
@@ -45,3 +43,7 @@ See [PostCSS] docs for examples for your environment.
 |----------|---------|-----------------------------------------|
 | debug    | false   | Show information for debugging          |
 | maxWidth | 32768   | The maximum characters allowed per line |
+
+[PostCSS]: https://github.com/postcss/postcss
+[ci-img]:  https://travis-ci.org/hp-mobile/postcss-wrap-lines.svg
+[ci]:      https://travis-ci.org/hp-mobile/postcss-wrap-lines
