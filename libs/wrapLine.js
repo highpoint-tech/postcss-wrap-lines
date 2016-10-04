@@ -6,12 +6,12 @@ function testCharacter(char, delimiters) {
     return delimiters.indexOf(char) > -1 || white.test(char);
 }
 
-function wrapLine(lineIn, opts = {}) {
+function wrapLine(lineIn, opts) {
     opts = Object.assign({}, {
         delimiters: [],
         lineDelimeter: '',
         maxWidth: 32768
-    }, opts);
+    }, opts || {});
 
     let line = lineIn;
     let done = false;
