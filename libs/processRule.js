@@ -1,17 +1,21 @@
 const lastLineLength = require('./lastLineLength');
 const wrapLine = require('./wrapLine');
 
-function getNodeLength(node) {
-    let nodeLength = node.toString().length;
+function getTrailingChars(node) {
+    let trailingChars = 0;
 
     let nextNode = node.next();
     if (node.parent.type === 'atrule' &&
         (!nextNode || nextNode.parent !== node.parent)
     ) {
-        nodeLength += '}'.length;
+        trailingChars += '}'.length;
     }
 
-    return nodeLength;
+    return trailingChars;
+}
+
+function getNodeLength(node) {
+    return node.toString().length;
 }
 
 function getSelectorLength(node) {
@@ -19,14 +23,7 @@ function getSelectorLength(node) {
         node.raws.between.length +
         '{'.length;
 
-    let nextNode = node.next();
-    if (node.parent.type === 'atrule' &&
-        (!nextNode || nextNode.parent !== node.parent)
-    ) {
-        lineLength += '}'.length;
-    }
-
-    return lineLength;
+    return lineLength + getTrailingChars(node);
 }
 
 function getUpdatedSelectorLength(node) {
@@ -34,79 +31,10 @@ function getUpdatedSelectorLength(node) {
         node.raws.between.length +
         '{'.length;
 
-    let nextNode = node.next();
-    if (node.parent.type === 'atrule' &&
-        nextNode &&
-        nextNode.parent !== node.parent
-    ) {
-        lineLength += '}'.length;
-    }
-
-    return lineLength;
+    return lineLength + getTrailingChars(node);
 }
 
-function processRule(node, opts, currentWidth) {
-    let nodeLength = getNodeLength(node);
-
-    if (currentWidth + nodeLength < opts.maxWidth) {
-        return {
-            currentWidth: currentWidth + nodeLength,
-            parentRule: node,
-            widthType: 'node-fits'
-        };
-    }
-
-    let selectorLength = getSelectorLength(node);
-
-    if (currentWidth + selectorLength <= opts.maxWidth) {
-        return {
-            currentWidth: currentWidth + selectorLength,
-            widthType: 'selector-fits'
-        };
-    }
-
-    let delimiterFound = node.selector
-        .substring(0, opts.maxWidth - currentWidth)
-        .match(/(,| )/) !== null;
-
-    if (delimiterFound) {
-        let padding = new Array(
-            currentWidth +
-            node.raws.between.length +
-            '{'.length +
-            1
-        ).join('~');
-
-        node.selector = wrapLine(padding + node.selector, {
-            delimiters: [','],
-            maxWidth: opts.maxWidth
-        }).replace(/~/g, '');
-
-        currentWidth = getUpdatedSelectorLength(node);
-
-        return {
-            currentWidth: currentWidth,
-            widthType: 'multi-line-selector'
-        };
-    }
-
-    node.raws.before = `\n`;
-
-    if (nodeLength <= opts.maxWidth) {
-        return {
-            currentWidth: nodeLength,
-            parentRule: node,
-            widthType: 'node-fits-new-line'
-        };
-    }
-
-    if (selectorLength <= opts.maxWidth) {
-        return {
-            currentWidth: selectorLength,
-            widthType: 'selector-fits-new-line'
-        };
-    }
-
+function makeSelectorMultiLine(node, opts, currentWidth) {
     let padding = new Array(
         currentWidth +
         node.raws.between.length +
@@ -119,10 +47,67 @@ function processRule(node, opts, currentWidth) {
         maxWidth: opts.maxWidth
     }).replace(/~/g, '');
 
-    currentWidth = getUpdatedSelectorLength(node);
+    return getUpdatedSelectorLength(node);
+}
 
+function processRule(node, opts, currentWidth) {
+    // Node fits on the current line
+    let nodeLength = getNodeLength(node);
+
+    if (currentWidth + nodeLength < opts.maxWidth) {
+        return {
+            currentWidth: currentWidth + nodeLength,
+            parentRule: node, // Skip this rule's declarations
+            widthType: 'node-fits'
+        };
+    }
+
+    // Selector fits on the current line
+    let selectorLength = getSelectorLength(node);
+
+    if (currentWidth + selectorLength <= opts.maxWidth) {
+        return {
+            currentWidth: currentWidth + selectorLength,
+            widthType: 'selector-fits'
+        };
+    }
+
+    // Selector can be broken down into smaller
+    // chunks, spread across multiple lines
+    let delimiterFound = node.selector
+        .substring(0, opts.maxWidth - currentWidth)
+        .match(/(,| )/) !== null;
+
+    if (delimiterFound) {
+        return {
+            currentWidth: makeSelectorMultiLine(node, opts, currentWidth),
+            widthType: 'multi-line-delimited'
+        };
+    }
+
+    node.raws.before = `\n`;
+
+    // Node fits on a new line
+    if (nodeLength <= opts.maxWidth) {
+        return {
+            currentWidth: nodeLength,
+            parentRule: node, // Skip this rule's declarations
+            widthType: 'node-fits-new-line'
+        };
+    }
+
+    // Selector fits on a new line
+    if (selectorLength <= opts.maxWidth) {
+        return {
+            currentWidth: selectorLength,
+            widthType: 'selector-fits-new-line'
+        };
+    }
+
+    // Selector needs to be broken down into smaller
+    // chunks, spread across multiple lines
     return {
-        currentWidth: currentWidth,
+        currentWidth: makeSelectorMultiLine(node, opts, currentWidth),
         widthType: 'multi-line'
     };
 }

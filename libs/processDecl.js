@@ -1,47 +1,36 @@
 const lastLineLength = require('./lastLineLength');
 const wrapLine = require('./wrapLine');
 
-function getNodeLength(node) {
-    let nodeLength = node.toString().length;
+function getTrailingChars(node) {
+    let trailingChars = 0;
 
     if (!node.next()) {
         if (node.parent.raws.semicolon) {
-            nodeLength += ';'.length;
+            trailingChars += ';'.length;
         }
 
-        nodeLength += '}'.length;
+        trailingChars += '}'.length;
 
         if (node.parent.parent.type === 'atrule') {
-            nodeLength += '}'.length;
+            trailingChars += '}'.length;
         }
     } else {
-        nodeLength += ';'.length;
+        trailingChars += ';'.length;
     }
 
-    return nodeLength;
+    return trailingChars;
+}
+
+function getNodeLength(node) {
+    return node.toString().length + getTrailingChars(node);
 }
 
 function getUpdatedNodeLength(node) {
-    let nodeLength = lastLineLength(node.value);
-
-    if (!node.next()) {
-        if (node.parent.raws.semicolon) {
-            nodeLength += ';'.length;
-        }
-
-        nodeLength += '}'.length;
-
-        if (node.parent.parent.type === 'atrule') {
-            nodeLength += '}'.length;
-        }
-    } else {
-        nodeLength += ';'.length;
-    }
-
-    return nodeLength;
+    return lastLineLength(node.value) + getTrailingChars(node);
 }
 
 function processDecl(node, opts, currentWidth) {
+    // Node fits on the current line
     let nodeLength = getNodeLength(node);
 
     if (currentWidth + nodeLength <= opts.maxWidth) {
@@ -51,6 +40,7 @@ function processDecl(node, opts, currentWidth) {
         };
     }
 
+    // Node fits on a new line
     if (nodeLength <= opts.maxWidth) {
         node.raws.before = `\n`;
         return {
@@ -59,6 +49,8 @@ function processDecl(node, opts, currentWidth) {
         };
     }
 
+    // Node needs to be broken down into smaller
+    // chunks, spread across multiple lines
     let padding = new Array(
         currentWidth +
         node.prop.length +

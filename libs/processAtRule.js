@@ -10,16 +10,18 @@ function getLineLength(node) {
 }
 
 module.exports = function processAtRule(node, opts, currentWidth) {
+    // Node fits on the current line
     let nodeLength = node.toString().length;
 
     if (currentWidth + nodeLength < opts.maxWidth) {
         return {
             currentWidth: currentWidth + nodeLength,
-            parentAtRule: node,
+            parentAtRule: node, // Skip this at-rule's rules & declarations
             widthType: 'node-fits'
         };
     }
 
+    // Definition fits on the current line
     let lineLength = getLineLength(node);
 
     if (lineLength + currentWidth <= opts.maxWidth) {
@@ -29,6 +31,7 @@ module.exports = function processAtRule(node, opts, currentWidth) {
         };
     }
 
+    // Definition fits on a new line
     node.raws.before = `\n`;
 
     if (lineLength <= opts.maxWidth) {
@@ -38,6 +41,7 @@ module.exports = function processAtRule(node, opts, currentWidth) {
         };
     }
 
+    // Uh oh
     return {
         currentWidth,
         widthType: 'other'
