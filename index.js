@@ -4,11 +4,11 @@ const processAtRule = require('./libs/processAtRule');
 const processDecl = require('./libs/processDecl');
 const processRule = require('./libs/processRule');
 
-const wrapLines = postcss.plugin('postcss-wrap-lines', (opts = {}) => {
+const wrapLines = postcss.plugin('postcss-wrap-lines', opts => {
     opts = Object.assign({}, {
         debug: false,
         maxWidth: 32768
-    }, opts);
+    }, opts || {});
 
     return function (css) {
         let currentWidth = 0;
