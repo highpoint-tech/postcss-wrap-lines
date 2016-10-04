@@ -2,3 +2,9 @@ language: node_js
 node_js:
   - "6"
   - "4"
+notifications:
+  email:
+    on_success: never
+  slack:
+    rooms:
+      secure: IAUacpY2QrcI0t0nW8qrePYCJKIbbOOLHaqdGcJB6Mx64ePNaancu1cNpKDM5fhya383hHqaH6RKn0zUVgSByYetiok7f3F5po6yE/GMGHdL1uQyPMX9PzG1TPytWXWOLuRDEjTKXfxkcR0h+zEgQhv5Fh9TiCFkI1MP+TMKoOUzDP7JZqJP4mvfDDkDX0bhtSsLmFedj5V/M/z3888KTi/i2CFzlePI3Pig2uQWW8j9k999pSl46t5dPraDkVic0FUG4Hy6mlFFIPZSr2Vll4yDl8LjZzk2ke62Syy5e7zK8wpWQCSGahs2+/VO27hiO9jhpfGIiiUq7Y4B55nVSPSChhzD8+N/Q0p+V/3tP9TzBy31+FuUiTrFFVUVYJ08PZfHl0lfm7CjkG7n0NWSwd196MAPcn0LxL/hDZZ56FLf2OnWa16UKPNfNCT7sUuFFwvVq1YsEupe6KjVQmCt0goZDAjKhRpy2xy8DF2SnzqnS5hSOyfI4fFBwSalaHJ0szabvvoiMjnc1+FEZrE+95yHbfsu9/IIrFqc28K90TdcMLGALH8Z/ZnWpoOyAXBPitdgE8GkjzbOuECCRRjWmuYH3z71N8yQ1kF7tsJFJQ98KfzIEqtF6CaePaxLhqWkE4KA9MVDgw9zeQstwJp71Ddddww5Qz2x4udIXva0sp0=
