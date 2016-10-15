@@ -14,9 +14,13 @@ function run(t, input, output, opts = { }) {
         });
 }
 
-test('Basic functionality', t => {
-    let input = fs.readFileSync('./tests/basic/input.css', 'utf8');
-    let output = fs.readFileSync('./tests/basic/output.css', 'utf8');
+const files = fs.readdirSync('./tests');
 
-    return run(t, input, output, { maxWidth: 80 });
+files.forEach(file => {
+    test(file, t => {
+        let input = fs.readFileSync(`./tests/${file}/input.css`, 'utf8');
+        let output = fs.readFileSync(`./tests/${file}/output.css`, 'utf8');
+
+        return run(t, input, output, { maxWidth: 80 });
+    });
 });
