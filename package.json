@@ -2,13 +2,7 @@
   "name": "postcss-wrap-lines",
   "version": "0.1.0",
   "description": "PostCSS plugin to wrap lines after a specified number of characters",
-  "keywords": [
-    "postcss",
-    "css",
-    "postcss-plugin",
-    "wrap",
-    "long-lines"
-  ],
+  "keywords": ["postcss", "css", "postcss-plugin", "wrap", "long-lines"],
   "author": "Jonathan Rehm <jrehm@mhighpoint.com>",
   "license": "MIT",
   "repository": "hp-mobile/postcss-wrap-lines",
@@ -16,8 +10,8 @@
     "url": "https://github.com/hp-mobile/postcss-wrap-lines/issues"
   },
   "homepage": "https://github.com/hp-mobile/postcss-wrap-lines",
-  "dependencies": {
-    "postcss": "^5.2.0"
+  "peerDependencies": {
+    "postcss": "^5.2.0 || ^6.0.0 || ^7.0.0"
   },
   "devDependencies": {
     "ava": "^0.16.0",
