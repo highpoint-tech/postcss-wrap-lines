@@ -53,7 +53,7 @@ const processDecl = (node, opts, currentWidth) => {
   ).join('~');
 
   node.value = wrapLine(padding + node.value, {
-    delimiters: [],
+    delimiters: [',', ':'],
     lineDelimeter: '\\',
     maxWidth: opts.maxWidth
   }).replace(/~/g, '');

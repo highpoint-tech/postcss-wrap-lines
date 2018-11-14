@@ -1,7 +1,18 @@
-const white = new RegExp(/^\s$/);
+const white = new RegExp(/\s/);
+const quotes = ["'", '"'];
 
-const testCharacter = (char, delimiters) =>
-  delimiters.indexOf(char) > -1 || white.test(char);
+const getQuotes = (char, inQuotes) => {
+  if (!quotes.includes(char)) return inQuotes;
+
+  if (inQuotes.includes(char)) {
+    return inQuotes.filter(c => c !== char);
+  }
+
+  return [...inQuotes, char];
+};
+
+const canBreakOnChar = (char, delimiters) =>
+  delimiters.includes(char) || white.test(char);
 
 const wrapLine = (lineIn, opts = {}) => {
   opts = Object.assign(
@@ -14,20 +25,33 @@ const wrapLine = (lineIn, opts = {}) => {
     opts
   );
 
+  if (lineIn.length < opts.maxWidth) {
+    return lineIn;
+  }
+
   let line = lineIn;
   let done = false;
   let res = '';
 
-  if (line.length < opts.maxWidth) {
-    return line;
-  }
-
   do {
     let found = false;
 
+    // Determine which quotes are outside the search area because these will be
+    // our starting quotes. This is done by looking for mismatched quotes
+    // (uneven count) in the search area.
+    const searchArea = line.slice(0, opts.maxWidth);
+    let inQuotes = quotes.reduce((acc, quote) => {
+      const count = searchArea.split(quote).length - 1;
+      if (count % 2 === 0) return acc;
+      return [...acc, quote];
+    }, []);
+
     // Inserts new line at first opportunity
     for (let i = opts.maxWidth - 1; i >= 0; i--) {
-      if (testCharacter(line.charAt(i), opts.delimiters)) {
+      const char = line.charAt(i);
+      inQuotes = getQuotes(char, inQuotes);
+
+      if (inQuotes.length === 0 && canBreakOnChar(char, opts.delimiters)) {
         const newLine = line.slice(0, i + 1).trim();
 
         res += [newLine, `\n`].join('');
@@ -37,12 +61,23 @@ const wrapLine = (lineIn, opts = {}) => {
       }
     }
 
-    // Inserts new line at maxWidth position, the word is too long to wrap
+    // No wrap opportunity found, let's see what we can do about that
     if (!found) {
-      const sliceSize = opts.maxWidth - opts.lineDelimeter.length;
+      const hasPadding = line.includes('~');
 
-      res += [line.slice(0, sliceSize), `\n`].join(opts.lineDelimeter);
-      line = line.slice(sliceSize);
+      // Wrap line, remove padding, and try again
+      if (hasPadding) {
+        res += `\n`;
+        line = line.replace(/~/g, '');
+      }
+
+      // The word is too long to wrap, so force a new line at maxWidth position
+      if (!hasPadding) {
+        const sliceSize = opts.maxWidth - opts.lineDelimeter.length;
+
+        res += [line.slice(0, sliceSize), `\n`].join(opts.lineDelimeter);
+        line = line.slice(sliceSize);
+      }
     }
 
     if (line.length < opts.maxWidth) {
