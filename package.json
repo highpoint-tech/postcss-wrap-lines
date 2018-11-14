@@ -1,6 +1,6 @@
 {
   "name": "postcss-wrap-lines",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "PostCSS plugin to wrap lines after a specified number of characters",
   "keywords": ["postcss", "css", "postcss-plugin", "wrap", "long-lines"],
   "author": "Jonathan Rehm <jrehm@mhighpoint.com>",
