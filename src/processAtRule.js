@@ -1,15 +1,12 @@
-function getLineLength(node) {
-  return (
-    '@'.length +
-    node.name.length +
-    node.raws.afterName.length +
-    node.raws.between.length +
-    node.params.length +
-    '{'.length
-  );
-}
+const getLineLength = node =>
+  '@'.length +
+  node.name.length +
+  node.raws.afterName.length +
+  node.raws.between.length +
+  node.params.length +
+  '{'.length;
 
-module.exports = function processAtRule(node, opts, currentWidth) {
+const processAtRule = (node, opts, currentWidth) => {
   // Node fits on the current line
   const nodeLength = node.toString().length;
 
@@ -47,3 +44,5 @@ module.exports = function processAtRule(node, opts, currentWidth) {
     widthType: 'other'
   };
 };
+
+module.exports = processAtRule;

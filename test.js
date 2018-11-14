@@ -4,14 +4,13 @@ import postcss from 'postcss';
 
 import wrapLines from './src';
 
-function run(t, input, output, opts = {}) {
-  return postcss([wrapLines(opts)])
+const run = (t, input, output, opts = {}) =>
+  postcss([wrapLines(opts)])
     .process(input)
     .then(result => {
       t.deepEqual(result.css, output);
       t.deepEqual(result.warnings().length, 0);
     });
-}
 
 const files = fs.readdirSync('./tests');
 

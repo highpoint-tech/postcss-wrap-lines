@@ -1,7 +1,7 @@
 const lastLineLength = require('./lastLineLength');
 const wrapLine = require('./wrapLine');
 
-function getTrailingChars(node) {
+const getTrailingChars = node => {
   let trailingChars = 0;
 
   const nextNode = node.next();
@@ -13,27 +13,25 @@ function getTrailingChars(node) {
   }
 
   return trailingChars;
-}
+};
 
-function getNodeLength(node) {
-  return node.toString().length;
-}
+const getNodeLength = node => node.toString().length;
 
-function getSelectorLength(node) {
+const getSelectorLength = node => {
   const lineLength =
     node.selector.length + node.raws.between.length + '{'.length;
 
   return lineLength + getTrailingChars(node);
-}
+};
 
-function getUpdatedSelectorLength(node) {
+const getUpdatedSelectorLength = node => {
   const lineLength =
     lastLineLength(node.selector) + node.raws.between.length + '{'.length;
 
   return lineLength + getTrailingChars(node);
-}
+};
 
-function makeSelectorMultiLine(node, opts, currentWidth) {
+const makeSelectorMultiLine = (node, opts, currentWidth) => {
   const padding = new Array(
     currentWidth + node.raws.between.length + '{'.length + 1
   ).join('~');
@@ -44,9 +42,9 @@ function makeSelectorMultiLine(node, opts, currentWidth) {
   }).replace(/~/g, '');
 
   return getUpdatedSelectorLength(node);
-}
+};
 
-function processRule(node, opts, currentWidth) {
+const processRule = (node, opts, currentWidth) => {
   // Node fits on the current line
   const nodeLength = getNodeLength(node);
 
@@ -106,6 +104,6 @@ function processRule(node, opts, currentWidth) {
     currentWidth: makeSelectorMultiLine(node, opts, currentWidth),
     widthType: 'multi-line'
   };
-}
+};
 
 module.exports = processRule;

@@ -1,10 +1,9 @@
-function testCharacter(char, delimiters) {
-  const white = new RegExp(/^\s$/);
+const white = new RegExp(/^\s$/);
 
-  return delimiters.indexOf(char) > -1 || white.test(char);
-}
+const testCharacter = (char, delimiters) =>
+  delimiters.indexOf(char) > -1 || white.test(char);
 
-function wrapLine(lineIn, opts = {}) {
+const wrapLine = (lineIn, opts = {}) => {
   opts = Object.assign(
     {},
     {
@@ -53,6 +52,6 @@ function wrapLine(lineIn, opts = {}) {
   } while (!done);
 
   return res;
-}
+};
 
 module.exports = wrapLine;

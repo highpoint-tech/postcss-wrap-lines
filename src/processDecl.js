@@ -1,7 +1,7 @@
 const lastLineLength = require('./lastLineLength');
 const wrapLine = require('./wrapLine');
 
-function getTrailingChars(node) {
+const getTrailingChars = node => {
   let trailingChars = 0;
 
   if (!node.next()) {
@@ -19,17 +19,14 @@ function getTrailingChars(node) {
   }
 
   return trailingChars;
-}
+};
 
-function getNodeLength(node) {
-  return node.toString().length + getTrailingChars(node);
-}
+const getNodeLength = node => node.toString().length + getTrailingChars(node);
 
-function getUpdatedNodeLength(node) {
-  return lastLineLength(node.value) + getTrailingChars(node);
-}
+const getUpdatedNodeLength = node =>
+  lastLineLength(node.value) + getTrailingChars(node);
 
-function processDecl(node, opts, currentWidth) {
+const processDecl = (node, opts, currentWidth) => {
   // Node fits on the current line
   const nodeLength = getNodeLength(node);
 
@@ -65,6 +62,6 @@ function processDecl(node, opts, currentWidth) {
     currentWidth: getUpdatedNodeLength(node),
     widthType: 'multi-line'
   };
-}
+};
 
 module.exports = processDecl;
