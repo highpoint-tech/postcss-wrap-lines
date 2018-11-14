@@ -11,6 +11,7 @@
   },
   "homepage": "https://github.com/hp-mobile/postcss-wrap-lines",
   "main": "src/index.js",
+  "files": ["src/*.js"],
   "peerDependencies": {
     "postcss": "^5.2.0 || ^6.0.0 || ^7.0.0"
   },
