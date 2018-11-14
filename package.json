@@ -10,6 +10,7 @@
     "url": "https://github.com/hp-mobile/postcss-wrap-lines/issues"
   },
   "homepage": "https://github.com/hp-mobile/postcss-wrap-lines",
+  "main": "src/index.js",
   "peerDependencies": {
     "postcss": "^5.2.0 || ^6.0.0 || ^7.0.0"
   },

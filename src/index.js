@@ -1,8 +1,8 @@
 const postcss = require('postcss');
-const lastLineLength = require('./libs/lastLineLength');
-const processAtRule = require('./libs/processAtRule');
-const processDecl = require('./libs/processDecl');
-const processRule = require('./libs/processRule');
+const lastLineLength = require('./lastLineLength');
+const processAtRule = require('./processAtRule');
+const processDecl = require('./processDecl');
+const processRule = require('./processRule');
 
 const wrapLines = postcss.plugin('postcss-wrap-lines', (opts = {}) => {
   opts = Object.assign(

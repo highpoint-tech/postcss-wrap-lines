@@ -2,7 +2,7 @@ import test from 'ava';
 import * as fs from 'fs';
 import postcss from 'postcss';
 
-import wrapLines from '.';
+import wrapLines from './src';
 
 function run(t, input, output, opts = {}) {
   return postcss([wrapLines(opts)])
