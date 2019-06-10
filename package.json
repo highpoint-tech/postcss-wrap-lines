@@ -5,11 +5,11 @@
   "keywords": ["postcss", "css", "postcss-plugin", "wrap", "long-lines"],
   "author": "Jonathan Rehm <jrehm@mhighpoint.com>",
   "license": "MIT",
-  "repository": "hp-mobile/postcss-wrap-lines",
+  "repository": "highpoint-tech/postcss-wrap-lines",
   "bugs": {
-    "url": "https://github.com/hp-mobile/postcss-wrap-lines/issues"
+    "url": "https://github.com/highpoint-tech/postcss-wrap-lines/issues"
   },
-  "homepage": "https://github.com/hp-mobile/postcss-wrap-lines",
+  "homepage": "https://github.com/highpoint-tech/postcss-wrap-lines",
   "main": "src/index.js",
   "files": ["src/*.js"],
   "peerDependencies": {

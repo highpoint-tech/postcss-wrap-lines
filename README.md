@@ -45,5 +45,5 @@ See [PostCSS] docs for examples for your environment.
 | maxWidth | 32768   | The maximum characters allowed per line |
 
 [PostCSS]: https://github.com/postcss/postcss
-[ci-img]:  https://travis-ci.org/hp-mobile/postcss-wrap-lines.svg
-[ci]:      https://travis-ci.org/hp-mobile/postcss-wrap-lines
+[ci-img]:  https://travis-ci.org/highpoint-tech/postcss-wrap-lines.svg
+[ci]:      https://travis-ci.org/highpoint-tech/postcss-wrap-lines
